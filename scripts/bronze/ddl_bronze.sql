@@ -1,3 +1,6 @@
+-- Purpose: Creates the 6 bronze tables (CRM and ERP), raw and as-is from the source CSVs.
+-- WARNING: Drops each bronze table if it already exists. All bronze data is lost.
+
 USE DataWarehouse;
 GO
 
