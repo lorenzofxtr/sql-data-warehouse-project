@@ -13,7 +13,7 @@ CREATE DATABASE DataWarehouse;
 
 GO
 
-USE Datawarehouse;
+USE DataWarehouse;
 
 GO
 
