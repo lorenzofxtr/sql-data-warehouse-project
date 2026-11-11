@@ -1,11 +1,20 @@
 -- Purpose: Cleans bronze tables and loads them into silver (all 6 tables: crm_cust_info, crm_prd_info, crm_sales_details, erp_cust_az12, erp_loc_a101, erp_px_cat_g1v2).
 -- Full load: each table is emptied (TRUNCATE) before the INSERT, so running it again gives the same result.
 -- WARNING: Deletes all current data in these silver tables before reloading them from bronze.
+
+USE DataWarehouse;
+GO
+
 CREATE OR ALTER PROCEDURE silver.load_silver AS
 BEGIN
+
+SET STATISTICS TIME ON;
+
+BEGIN TRY
 	-- ============================================================
 	-- crm_cust_info
 	-- ============================================================
+	PRINT 'crm_cust_info';
 	TRUNCATE TABLE silver.crm_cust_info;
 	INSERT INTO silver.crm_cust_info (
 				cst_id,
@@ -43,6 +52,7 @@ BEGIN
 	-- ============================================================
 	-- crm_prd_info
 	-- ============================================================
+	PRINT 'crm_prd_info';
 	TRUNCATE TABLE silver.crm_prd_info;
 	INSERT INTO silver.crm_prd_info (
 		prd_id,
@@ -77,6 +87,7 @@ BEGIN
 	-- ============================================================
 	-- crm_sales_details
 	-- ============================================================
+	PRINT 'crm_sales_details';
 	TRUNCATE TABLE silver.crm_sales_details;
 	INSERT INTO silver.crm_sales_details (
 		sls_ord_num,
@@ -121,6 +132,7 @@ BEGIN
 	-- ============================================================
 	-- erp_cust_az12
 	-- ============================================================
+	PRINT 'erp_cust_az12';
 	TRUNCATE TABLE silver.erp_cust_az12;
 	INSERT INTO silver.erp_cust_az12 (
 		cid,
@@ -145,6 +157,7 @@ BEGIN
 	-- ============================================================
 	-- erp_loc_a101
 	-- ============================================================
+	PRINT 'erp_loc_a101';
 	TRUNCATE TABLE silver.erp_loc_a101;
 	INSERT INTO silver.erp_loc_a101 (
 		cid,
@@ -168,6 +181,7 @@ BEGIN
 	-- Known source issue, kept as it came: category 'CO_PE' (7 pedal products in crm_prd_info) has no match here,
 	-- and 'CO_PD' (Components / Pedals) here has no products. Probably the same category typed two ways;
 	-- not changed because the correct code could not be confirmed with the source owner.
+	PRINT 'erp_px_cat_g1v2';
 	TRUNCATE TABLE silver.erp_px_cat_g1v2;
 	INSERT INTO silver.erp_px_cat_g1v2 (
 		id,
@@ -180,4 +194,9 @@ BEGIN
 		subcat,
 		maintenance
 	FROM DataWarehouse.bronze.erp_px_cat_g1v2;
+END TRY
+BEGIN CATCH
+PRINT 'ERROR: ' + ERROR_MESSAGE();
+END CATCH
+
 END
