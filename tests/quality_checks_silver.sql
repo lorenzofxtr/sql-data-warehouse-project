@@ -1,6 +1,9 @@
 -- Purpose: Data quality checks for the silver layer. Run on bronze to find issues, then on silver to confirm they are fixed.
 -- WARNING: Read-only. Changes nothing.
 
+USE DataWarehouse;
+GO
+
 -- ============================================================
 -- crm_cust_info
 -- ============================================================
