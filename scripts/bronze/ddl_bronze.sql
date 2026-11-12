@@ -4,6 +4,11 @@
 USE DataWarehouse;
 GO
 
+-- ============================================================
+-- CRM source (3 tables)
+-- ============================================================
+-- Columns and types follow the CSV files as they are. Nothing is cleaned in bronze.
+
 DROP TABLE IF EXISTS bronze.crm_cust_info;
 GO
 
@@ -17,6 +22,7 @@ CREATE TABLE bronze.crm_cust_info (
     cst_create_date DATE
 );
 GO
+
 DROP TABLE IF EXISTS bronze.crm_prd_info;
 GO
 
@@ -30,9 +36,11 @@ CREATE TABLE bronze.crm_prd_info (
     prd_end_dt DATE
 );
 GO
+
 DROP TABLE IF EXISTS bronze.crm_sales_details;
 GO
 
+-- The three dates arrive as numbers (e.g. 20101229). They stay INT here and become DATE in silver.
 CREATE TABLE bronze.crm_sales_details (
     sls_ord_num NVARCHAR(50),
     sls_prd_key NVARCHAR(50),
@@ -45,6 +53,12 @@ CREATE TABLE bronze.crm_sales_details (
     sls_price INT
 );
 GO
+
+-- ============================================================
+-- ERP source (3 tables)
+-- ============================================================
+-- Column names are upper case because that is how they come in the ERP files.
+
 DROP TABLE IF EXISTS bronze.erp_cust_az12;
 GO
 
@@ -54,6 +68,7 @@ CREATE TABLE bronze.erp_cust_az12 (
     GEN NVARCHAR(50)
 );
 GO
+
 DROP TABLE IF EXISTS bronze.erp_loc_a101;
 GO
 
@@ -62,6 +77,7 @@ CREATE TABLE bronze.erp_loc_a101 (
     CNTRY NVARCHAR(50)
 );
 GO
+
 DROP TABLE IF EXISTS bronze.erp_px_cat_g1v2;
 GO
 

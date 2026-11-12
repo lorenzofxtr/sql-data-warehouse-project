@@ -1,8 +1,17 @@
 -- Purpose: Creates the 6 silver tables (CRM and ERP), cleaned and standardized from the bronze layer.
 -- WARNING: Drops each silver table if it already exists. All silver data is lost.
 
+-- Differences from the bronze tables:
+--   * crm_prd_info has a new column, cat_id (the category code cut from the product key).
+--   * crm_sales_details stores the three dates as DATE (they are INT in bronze).
+--   * every table has dwh_create_date, filled automatically with the date and time of the load.
+
 USE DataWarehouse;
 GO
+
+-- ============================================================
+-- CRM source (3 tables)
+-- ============================================================
 
 DROP TABLE IF EXISTS silver.crm_cust_info;
 GO
@@ -18,6 +27,7 @@ CREATE TABLE silver.crm_cust_info (
     dwh_create_date DATETIME2 DEFAULT GETDATE()
 );
 GO
+
 DROP TABLE IF EXISTS silver.crm_prd_info;
 GO
 
@@ -33,6 +43,7 @@ CREATE TABLE silver.crm_prd_info (
     dwh_create_date DATETIME2 DEFAULT GETDATE()
 );
 GO
+
 DROP TABLE IF EXISTS silver.crm_sales_details;
 GO
 
@@ -49,6 +60,11 @@ CREATE TABLE silver.crm_sales_details (
     dwh_create_date DATETIME2 DEFAULT GETDATE()
 );
 GO
+
+-- ============================================================
+-- ERP source (3 tables)
+-- ============================================================
+
 DROP TABLE IF EXISTS silver.erp_cust_az12;
 GO
 
@@ -59,6 +75,7 @@ CREATE TABLE silver.erp_cust_az12 (
     dwh_create_date DATETIME2 DEFAULT GETDATE()
 );
 GO
+
 DROP TABLE IF EXISTS silver.erp_loc_a101;
 GO
 
@@ -68,6 +85,7 @@ CREATE TABLE silver.erp_loc_a101 (
     dwh_create_date DATETIME2 DEFAULT GETDATE()
 );
 GO
+
 DROP TABLE IF EXISTS silver.erp_px_cat_g1v2;
 GO
 
