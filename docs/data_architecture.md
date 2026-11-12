@@ -1,6 +1,6 @@
 # Southline Cycles: Data Warehouse Architecture
 
-To view the diagram, paste the block below into https://mermaid.live (GitHub renders it automatically).
+The warehouse follows the medallion pattern: three layers, each with one job. Data only moves forward, from the sources to bronze, then silver, then gold.
 
 ```mermaid
 flowchart LR
